@@ -40,70 +40,71 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  */
 
-@Autonomous(name="13702 depot RD", group="Testing")
-
-public class RD extends LinearOpMode {
+@Autonomous(name="tf_auto_left" , group="Testing")
+//@Disabled
+public class tf_auto_test_left extends LinearOpMode {
 
     /* Declare OpMode members. */
-    HardwareJoeBot2018      robot   = new HardwareJoeBot2018();
+    HardwareJoeBot2018 robot = new HardwareJoeBot2018();
 
-    // @Override
+    @Override
     public void runOpMode() {
 
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
          */
+
+        //Vuforia initialization happens in here:
         robot.init(hardwareMap, this);
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
         telemetry.update();
 
+        robot.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        robot.setMode(DcMotor.RunMode.RUN_USING_ENCODER);
+
 
         // Wait for the game to start (driver presses PLAY)
-
-
-        robot.minLanderPos();
-
-        robot.minLanderPos();
-
-
         waitForStart();
+        //Initialize position to an unknown state
+        int position=-1;
+
+        //This is a boolean that we'll use to figure out if we've successfully detected gold
+        boolean found_gold = false;
+
+        //while we haven't found gold, loop.....consider putting a timeout in here
+        while (!found_gold) {
+            telemetry.addLine("calling tflocate()");
+            telemetry.update();
+            sleep(1000);
+
+            ///Call our tflocate method to find the gold mineral
+            position = robot.tflocate();
 
 
+            // If we've successfully located gold, then do this:
+            if (position > -1)
+            {
+                //Set found_gold here to true to break the loop
+                found_gold=true;
+                telemetry.addLine("Found Gold");
+                telemetry.update();
+                sleep(12000);
+            }
+            telemetry.addLine("Sleeping");
+            telemetry.update();
+            sleep(1000);
+        }
+        //deactivate tensor flow to free up resources and so we don't crash the application
+        robot.tfod.deactivate();
 
-        //prep motors
 
-
-        //come down
-        //robot.hangLanderPos();
-        //get off hook
-        //robot.moveRobot(0,-3,0);
-       // robot.moveInches(16,1,5);
-        //arm comes down
-        //robot.minLanderPos();
-
-        robot.hangLanderPos();
-        robot.moveRobot(0,3,0);
-        robot.moveInches(2,.5,5);
-        robot.minLanderPos();
-
-        //move to depot and crater
-         robot.moveInches(15,.25,15);
-        robot.rotate(90,.25);
-        robot.moveInches(45,1,15);
-        robot.rotate(-135,.25);
-        robot.moveInches(50,1,15);
-        robot.mainBucketMotor.setPower(-0.75);
-        robot.forwardToggle();
-        robot.rotate(-90, .50);
-        robot.moveInches(-85,1,15);
-
-        //////////////////////////////////////////
-
+        //  This reports position (0 - left, 1 - center, 2- right)
+        telemetry.addData("Position is:", position);
+        telemetry.update();
 
 
     }
-
 }

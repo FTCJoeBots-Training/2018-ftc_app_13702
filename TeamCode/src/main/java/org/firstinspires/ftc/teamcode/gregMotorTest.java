@@ -29,6 +29,7 @@
 
 package org.firstinspires.ftc.teamcode;
 
+import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.Disabled;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
@@ -38,41 +39,42 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Sample code to test mapping of one motor to the gamepad.
  */
-@TeleOp(name = "READ Encoder Values", group = "Testing")
+@Autonomous(name = "READ Encoder Values", group = "Testing")
 //@Disabled
 public class gregMotorTest extends LinearOpMode {
 
 
     // Define class members
     DcMotor  liftMotor = null; // Lander Lift Motor
-    DcMotor  shoulderMotor = null;
-    DcMotor  elbowMotor =  null;
-    DcMotor  intakeMotor = null;
+    DcMotor  mainbucketmotor = null;
+    double liftpower = 0;
+   // DcMotor  elbowMotor =  null;
+    //DcMotor  intakeMotor = null;
 
-    Servo    markerServo = null;
-    Servo    mineralServo = null;
+
+    //Servo    mineralServo = null;
 
 
     @Override
     public void runOpMode() {
 
-        liftMotor       = hardwareMap.dcMotor.get("liftMotor");
-        shoulderMotor   = hardwareMap.dcMotor.get("shoulderMotor");
-        elbowMotor      = hardwareMap.dcMotor.get("elbowMotor");
-        intakeMotor     = hardwareMap.dcMotor.get("intakeMotor");
+        liftMotor       = hardwareMap.dcMotor.get("liftmotor");
+        mainbucketmotor   = hardwareMap.dcMotor.get("mainbucketmotor");
+      //  elbowMotor      = hardwareMap.dcMotor.get("elbowMotor");
+       // intakeMotor     = hardwareMap.dcMotor.get("intakeMotor");
 
-        markerServo     = hardwareMap.get(Servo.class, "markerServo");
-        mineralServo    = hardwareMap.get(Servo.class, "mineralServo");
+
+        //mineralServo    = hardwareMap.get(Servo.class, "mineralServo");
 
         liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        shoulderMotor.setDirection(DcMotor.Direction.FORWARD);
-        elbowMotor.setDirection(DcMotor.Direction.FORWARD);
-        intakeMotor.setDirection(DcMotor.Direction.FORWARD);
+        mainbucketmotor.setDirection(DcMotor.Direction.FORWARD);
+       // elbowMotor.setDirection(DcMotor.Direction.FORWARD);
+      //  intakeMotor.setDirection(DcMotor.Direction.FORWARD);
 
         liftMotor.setPower(0);
-        shoulderMotor.setPower(0);
-        elbowMotor.setPower(0);
-        intakeMotor.setPower(0);
+        mainbucketmotor.setPower(0);
+       // elbowMotor.setPower(0);
+       // intakeMotor.setPower(0);
 
 
 
@@ -85,11 +87,14 @@ public class gregMotorTest extends LinearOpMode {
         while(opModeIsActive()) {
 
             // Display the current value
-            telemetry.addData("liftMotor Pos: ", liftMotor.getCurrentPosition());
-            telemetry.addData("shoulderMotor Pos: ", shoulderMotor.getCurrentPosition());
-            telemetry.addData("elbowMotor Pos: ", elbowMotor.getCurrentPosition());
-            telemetry.addData("Marker Servo: ", markerServo.getPosition());
-            telemetry.addData("Mineral Servo: ", mineralServo.getPosition());
+
+
+            liftpower = gamepad1.left_stick_y * 0.75;
+            liftMotor.setPower(liftpower);
+          //  telemetry.addData("elbowMotor Pos: ", elbowMotor.getCurrentPosition());
+            telemetry.addData("mainbucketmotor ", mainbucketmotor.getCurrentPosition());
+            telemetry.addData("liftMotor ", liftMotor.getCurrentPosition());
+           // telemetry.addData("Mineral Servo: ", mineralServo.getPosition());
             telemetry.addData(">", "Press Stop to end test." );
             telemetry.update();
 
