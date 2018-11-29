@@ -40,12 +40,14 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  */
 
-@Autonomous(name="13702 Depot Code Only Middle", group="Testing")
+@Autonomous(name="13702 Depot Middle Mineral", group="Testing")
 
 public class blankOpmode_autoDepotTest extends LinearOpMode {
 
     /* Declare OpMode members. */
     HardwareJoeBot2018      robot   = new HardwareJoeBot2018();
+    int mineralPath = -1;
+    int x;
 
     // @Override
     public void runOpMode() {
@@ -70,36 +72,79 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
 
         robot.minLanderPos();
 
+
+        for(x=0; x<100; x++) {
+
+            // set mineralpath = tensorflow data
+            mineralPath = robot.tflocate();
+
+            if (mineralPath>=0) {
+                // We know we've found a mineral
+                x = 100;
+            }
+            sleep(50);
+        }
+
+        switch(mineralPath) {
+            case 0:
+                // The gold mineral is on the left
+                telemetry.addLine("<<LEFT>>");
+                telemetry.update();
+                break;
+
+            case 1:
+                // the gold mineral is in the center
+                telemetry.addLine("<<CENTER>>");
+                telemetry.update();
+                break;
+
+            case 2:
+                // the gold mineral is on the right
+                telemetry.addLine("<<RIGHT>>");
+                telemetry.update();
+                break;
+
+            case -1:
+                // The gold mineral can't be found
+                telemetry.addLine("MINERAL SAMPLING ERROR!!!");
+                telemetry.update();
+                break;
+        }
+
+
+
         waitForStart();
 
-
-
-
-
-
-
-
-
-
-        //prep motors
-
-
-        //come down
+        //lower the robot (raise the lift)
         //robot.hangLanderPos();
+
         //get off hook
+        // robot.moveRobot(0,-6,0);
 
-       // robot.moveRobot(0,-6,0);
-        robot.moveInches(13,1,5);
-        //arm comes down
-        //robot.minLanderPos();
+        // lower landing arm
+
+        // Sample Minerals... Do we see gold?
+        // 0 = left; 1 = center; 2=right
 
 
 
-        //move to depot and crater
-       // robot.moveInches(13,.25,15);
-       // robot.moveRobot(0,6,0);
+        // Based on mineral location, drive to depot.
+
+        if (mineralPath == 0) {
+            // left driving paths
+        } else if (mineralPath == -1) {
+            // center driving paths
+        } else if (mineralPath == 1) {
+            // center driving paths
+        } else if (mineralPath == 2) {
+            // right driving paths
+        }
+
+
+        // Head to Crater for parking
 
         //robot.rotate(45,.25);
+        /*
         robot.moveInches(43,1,15);
 
         robot.forwardToggle();
@@ -109,6 +154,8 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
         robot.moveRobot(0,2,0);
         sleep(1000);
         robot.moveInches(75,1,15);
+        */
+
         /*
         robot.moveRobot(0,3,0);
         robot.moveInches(35,1,15);

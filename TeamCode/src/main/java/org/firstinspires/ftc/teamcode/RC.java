@@ -64,7 +64,7 @@ import com.qualcomm.robotcore.util.ElapsedTime;
  * Remove or comment out the @Disabled line to add this opmode to the Driver Station OpMode list
  */
 
-@Autonomous(name="13702 Crater Code", group="Pushbot")
+@Autonomous(name="13702 Crater Codee", group="Pushbot")
 public class RC extends LinearOpMode {
 
     /* Declare OpMode members. */

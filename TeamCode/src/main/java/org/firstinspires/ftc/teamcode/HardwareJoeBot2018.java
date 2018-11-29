@@ -11,6 +11,7 @@ import com.qualcomm.robotcore.hardware.configuration.typecontainers.ServoConfigu
 import com.qualcomm.robotcore.util.ElapsedTime;
 
 import org.firstinspires.ftc.robotcore.external.ClassFactory;
+import org.firstinspires.ftc.robotcore.external.hardware.camera.WebcamName;
 import org.firstinspires.ftc.robotcore.external.navigation.Acceleration;
 import org.firstinspires.ftc.robotcore.external.navigation.AngleUnit;
 import org.firstinspires.ftc.robotcore.external.navigation.AxesOrder;
@@ -440,14 +441,13 @@ public class HardwareJoeBot2018
     }
 
     public void hangLanderPos () {
-        if (liftMotor.getCurrentPosition() <= 1429) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(1429);
-        }
-        if (liftMotor.getCurrentPosition() >= 1429) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(1429);
-        }
+
+        // Move MainBucket out of the way.
+
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setTargetPosition(1429);
+        liftMotor.setPower(0.75);
+
     }
 
     public void releaseBear () {
@@ -695,7 +695,7 @@ public class HardwareJoeBot2018
         VuforiaLocalizer.Parameters parameters = new VuforiaLocalizer.Parameters();
 
         parameters.vuforiaLicenseKey = VUFORIA_KEY;
-        parameters.cameraDirection = VuforiaLocalizer.CameraDirection.BACK;
+        parameters.cameraName = hwMap.get(WebcamName.class, "Webcam");
 
         //  Instantiate the Vuforia engine
         vuforia = ClassFactory.getInstance().createVuforia(parameters);
