@@ -106,9 +106,8 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
         sleep(2000);
         robot.mainBucketMotor.setPower(-0.75);
         robot.rotate(-135,.5);
-        robot.moveRobot(0,3,0);
-        sleep(2000);
-        robot.mainBucketMotor.setPower(0.75);
+        robot.moveRobot(0,2,0);
+        sleep(1000);
         robot.moveInches(75,1,15);
         /*
         robot.moveRobot(0,3,0);
