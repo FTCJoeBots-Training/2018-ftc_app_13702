@@ -37,6 +37,8 @@ import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.Servo;
 
+import org.firstinspires.ftc.robotcore.internal.android.dex.EncodedValueReader;
+
 /**
  * Sample code to test mapping of one motor to the gamepad.
  */
@@ -51,7 +53,6 @@ public class EthansCode extends LinearOpMode {
 
 
 
-    Servo liftbucket;
     Servo rightpos;
     Servo leftpos;
 
@@ -102,10 +103,6 @@ public class EthansCode extends LinearOpMode {
 
         // Connect to motor (Assume standard left wheel)
         // Change the text in quotes to match any motor name on your robot.
-        robot.liftMotor = hardwareMap.get(DcMotor.class, "liftmotor");
-        robot.mainBucketMotor = hardwareMap.get(DcMotor.class, "mainbucketmotor");
-        robot.intakeMotor = hardwareMap.get(DcMotor.class, "intakemotor");
-        liftbucket = hardwareMap.get(Servo.class, "liftbucket");
         rightpos = hardwareMap.get(Servo.class, "rightpos");
         leftpos = hardwareMap.get(Servo.class, "leftpos");
 
@@ -130,7 +127,7 @@ public class EthansCode extends LinearOpMode {
             //Set initial motion parameters to Gamepad1 Inputs
 
 
-            forward = -gamepad1.left_stick_y;
+            forward = gamepad1.left_stick_y;
             //right = gamepad1.left_stick_x;
             right = -gamepad1.left_trigger + gamepad1.right_trigger;
             clockwise = gamepad1.right_stick_x;
@@ -195,7 +192,7 @@ public class EthansCode extends LinearOpMode {
             mainbucketpower = gamepad2.left_stick_y * 0.75;
             robot.mainBucketMotor.setPower(mainbucketpower);
 
-            liftpower = gamepad2.right_stick_y * 0.25;
+            liftpower = gamepad2.right_stick_y * 0.75;
             robot.liftMotor.setPower(liftpower);
 
             telemetry.addLine("operator i suppose");
@@ -216,9 +213,9 @@ public class EthansCode extends LinearOpMode {
             bPrevStateLbump = bCurrStateLbump;
 
             if (LBPon == true) {
-                liftbucket.setPosition(0);
+                robot.liftbucketservo.setPosition(0);
             } else {
-                liftbucket.setPosition(.48);
+                robot.liftbucketservo.setPosition(.48);
             }
 
             telemetry.addLine("lift motor");
@@ -288,11 +285,9 @@ public class EthansCode extends LinearOpMode {
 
             telemetry.addData("Lift Bucket Motor Power", "%5.2f", liftpower);
             telemetry.addData("Main Bucket Motor Power", "%5.2f", mainpower);
-            telemetry.addData("position", "%5.2f", liftbucket.getPosition());
+            telemetry.addData("position", "%5.2f", robot.liftbucketservo.getPosition());
             telemetry.addData("right_position", "%5.2f", rightpos.getPosition());
             telemetry.addData("left_position", "%5.2f", leftpos.getPosition());
-
-            // telemetry.addData("Lift Bucket Servo", "%5.2f", liftbucketpos);
 
 
             telemetry.addData(">", "Press Stop to end test." );
