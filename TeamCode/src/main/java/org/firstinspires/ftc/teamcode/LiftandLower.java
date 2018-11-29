@@ -31,6 +31,7 @@ package org.firstinspires.ftc.teamcode;
 
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
+import com.qualcomm.robotcore.hardware.DcMotor;
 
 /**
  *
@@ -39,7 +40,7 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
  *
  */
 
-@Autonomous(name=" lift and lower only ", group="Testing")
+@Autonomous(name="lower only Lift later ", group="Testing")
 
 public class LiftandLower extends LinearOpMode {
 
@@ -66,18 +67,12 @@ public class LiftandLower extends LinearOpMode {
         // Wait for the game to start (driver presses PLAY)
 
 
-        robot.minLanderPos();
-
-
-        robot.minLanderPos();
 
         waitForStart();
 
-
-        robot.hangLanderPos();
-        robot.moveRobot(0,3,0);
-        robot.moveInches(2,.5,5);
-        robot.minLanderPos();
+        robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        robot.liftMotor.setTargetPosition(-459);
+        robot.liftMotor.setPower(0.75);
 
 
         //PASTE YOUR OPMODE CODE HERE
