@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  *
@@ -55,6 +56,7 @@ public class Deploy_13702 extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap, this);
+        ElapsedTime runtime = new ElapsedTime();
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -73,10 +75,21 @@ public class Deploy_13702 extends LinearOpMode {
 
         robot.hangLanderPos();
 
-        robot.moveRobot(0,1,0);
+        robot.moveRobot(0,0.5,0);
+        runtime.reset();
+        while(opModeIsActive() && runtime.seconds() < 0.5) {
+            idle();
+        }
+        robot.stop();
+
 
         robot.minLanderPos();
-        robot.moveRobot(0,-1,0);
+        robot.moveRobot(0,-0.5,0);
+        runtime.reset();
+        while(opModeIsActive() && runtime.seconds() < 0.5) {
+            idle();
+        }
+        robot.stop();
 
 
         //robot.moveInches(70,1,15);
