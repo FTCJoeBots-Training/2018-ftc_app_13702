@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  */
 
-@Autonomous(name="13702 depot", group="Testing")
+@Autonomous(name="13702 depot ethan", group="Testing")
 
 public class RD extends LinearOpMode {
 
@@ -95,7 +95,7 @@ public class RD extends LinearOpMode {
         robot.moveInches(45,1,15);
         robot.rotate(-135,.25);
         robot.moveInches(50,1,15);
-        robot.mainBucketMotor.setPower(-0.75);
+        robot.mainbucketmotor.setPower(-0.75);
         robot.forwardToggle();
         robot.rotate(-90, .50);
         robot.moveInches(-85,1,15);

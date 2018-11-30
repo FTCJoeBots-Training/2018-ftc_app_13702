@@ -46,7 +46,6 @@ public class gregServoTest extends LinearOpMode {
     static final double MAX_POS     =  1.0;     // Maximum rotational position
     static final double MIN_POS     =  0.0;     // Minimum rotational position
 
-
     Servo    markerServo = null;
     Servo    mineralServo = null;
     double   markerPos = 0.5;

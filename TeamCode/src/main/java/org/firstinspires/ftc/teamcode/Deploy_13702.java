@@ -73,6 +73,11 @@ public class Deploy_13702 extends LinearOpMode {
 
         robot.hangLanderPos();
 
+        robot.moveRobot(0,1,0);
+
+        robot.minLanderPos();
+        robot.moveRobot(0,-1,0);
+
 
         //robot.moveInches(70,1,15);
 

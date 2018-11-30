@@ -93,18 +93,25 @@ public class LiftandLowerMyBoi extends LinearOpMode {
         //telemetry.addData("Green", sensorColor.green());
         //telemetry.addData("Blue ", sensorColor.blue());
 
-
+        telemetry.addData("Status", "Resetting Encoders");    //
         telemetry.update();
 
         // Wait for the game to start (driver presses PLAY)
         waitForStart();
 
 
+     robot.hangLanderPos();
+
+
+     /*
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.liftMotor.setTargetPosition(-459);
-        robot.liftMotor.setPower(0.7);
+        robot.liftMotor.setPower(.7);
+     */
 
         // Red Crater Code
+
+
 
         //PASTE YOUR OPMODE CODE HERE
 //lander attach/ detach

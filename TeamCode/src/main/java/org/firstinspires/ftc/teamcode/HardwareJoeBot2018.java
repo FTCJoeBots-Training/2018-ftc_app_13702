@@ -55,6 +55,12 @@ public class HardwareJoeBot2018
   //  DcMotor shoulderMotor;
  //   DcMotor elbowMotor;
 
+    public boolean  bucketDeployed = false;
+    public boolean  liftRaised = false;
+    public boolean  liftLowered = true;
+    public boolean  liftScore = true;
+
+
 
 
     // Declare Sensors
@@ -80,6 +86,17 @@ public class HardwareJoeBot2018
     static final double WHEEL_DIAMETER_INCHES   = 4.0;
     static final double COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159);
+
+    static final int BUCKET_IN_POS = 0;
+    static final int BUCKET_OUT_POS = 440;
+    static  final double BUCKET_POWER = 0.15;
+    static  final double LIFT_POWER = 0.5;
+    static  final int LIFT_UP_POS = 10150;
+    static  final int LIFT_DOWN_POS = 0;
+    static  final int LIFT_SCORE_POS = 14000;
+
+
+
 
 
     /* Constructor */
@@ -395,26 +412,104 @@ public class HardwareJoeBot2018
 
 
     public void minLanderPos () {
-        if (liftMotor.getCurrentPosition() <= -451) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(-451);
+
+        if(!bucketDeployed) {
+           deployBucket();
         }
-        if (liftMotor.getCurrentPosition() >= -451) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(-451);
-            }
+
+
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setTargetPosition(LIFT_DOWN_POS);
+        liftMotor.setPower(LIFT_POWER);
+
+        while(myOpMode.opModeIsActive() && liftMotor.isBusy()) {
+            myOpMode.telemetry.addData("Lift Position: ", liftMotor.getCurrentPosition());
+            myOpMode.telemetry.update();
+            myOpMode.idle();
+        }
+
+        liftLowered = true;
     }
 
+
     public void hangLanderPos () {
-        if (liftMotor.getCurrentPosition() <= -280) {
-            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(-280);
+      // hanglandpos
+
+        // Make Sure Bucket is deployed
+
+        if(!bucketDeployed) {
+            deployBucket();
         }
-        if (liftMotor.getCurrentPosition() >= -280) {
+
+        // Move Lift
+
             liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(-280);
-        }
+            liftMotor.setTargetPosition(LIFT_UP_POS);
+            liftMotor.setPower(LIFT_POWER);
+
+            while(myOpMode.opModeIsActive() && liftMotor.isBusy()) {
+                myOpMode.telemetry.addData("Lift Position: ", liftMotor.getCurrentPosition());
+                myOpMode.telemetry.update();
+                myOpMode.idle();
+            }
+            liftRaised = true;
     }
+
+    public void scoreLanderPos () {
+        // scorelandpos
+
+        // Make Sure Bucket is deployed
+
+        if(!bucketDeployed) {
+            deployBucket();
+        }
+
+        // Move Lift
+
+        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftMotor.setTargetPosition(LIFT_SCORE_POS);
+        liftMotor.setPower(LIFT_POWER);
+
+        while(myOpMode.opModeIsActive() && liftMotor.isBusy()) {
+            myOpMode.telemetry.addData("Lift Position: ", liftMotor.getCurrentPosition());
+            myOpMode.telemetry.update();
+            myOpMode.idle();
+        }
+
+
+        liftScore = true;
+    }
+
+    public void deployBucket() {
+        // code to move bucket to search position
+        mainbucketmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mainbucketmotor.setTargetPosition(BUCKET_OUT_POS);
+        mainbucketmotor.setPower(BUCKET_POWER);
+
+        // WAIT FOR BUCKET TO FINISH
+
+        while(myOpMode.opModeIsActive() && mainbucketmotor.isBusy()) {
+            myOpMode.idle();
+        }
+        // bucket is finished moving. Tell robot.
+        bucketDeployed = true;
+    }
+
+    public void stowBucket() {// code to move bucket to search position
+        mainbucketmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mainbucketmotor.setTargetPosition(BUCKET_IN_POS);
+        mainbucketmotor.setPower(BUCKET_POWER);
+
+        // WAIT FOR BUCKET TO FINISH
+
+        while(myOpMode.opModeIsActive() && mainbucketmotor.isBusy()) {
+            myOpMode.idle();
+        }
+        // bucket is finished moving. Tell robot.
+        bucketDeployed = false;
+    }
+
+
 
     public void releaseBear () {
         //replace with open #
