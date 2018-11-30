@@ -35,23 +35,23 @@ import org.firstinspires.ftc.robotcore.external.navigation.Orientation;
  *
  */
 
-public class HardwareJoeBot2018
-{
+public class HardwareJoeBot2018 {
     /* Public OpMode members. */
 
     // Declare Motors
-    public DcMotor  motor0 = null; // Left Front
-    public DcMotor  motor1 = null; // Right Front
-    public DcMotor  motor2 = null; // Left Rear
-    public DcMotor  motor3 = null; // Right Rear
-    public DcMotor  liftMotor = null; // Lander Lift Motor
-    public DcMotor  shoulderMotor = null;
-    public DcMotor  elbowMotor =  null;
-    public DcMotor  intakeMotor = null;
+    public DcMotor motor0 = null; // Left Front
+    public DcMotor motor1 = null; // Right Front
+    public DcMotor motor2 = null; // Left Rear
+    public DcMotor motor3 = null; // Right Rear
+    public DcMotor liftmotor = null; // Lander Lift Motor
+    // public DcMotor shoulderMotor = null;
+    //public DcMotor a daelbowMotor = null;
+    public DcMotor MainBucketMotor = null;
+    //public DcMotor intakeMotor = null;
 
-    public Servo    mineralServo = null;
-    public Servo    markerServo = null;
-
+    public Servo mineralServo = null;
+    public Servo markerServo = null;
+    public Servo bearServo;
     // Declare Sensors
     public BNO055IMU imu;                  // The IMU sensor object
 
@@ -60,8 +60,8 @@ public class HardwareJoeBot2018
     public Acceleration gravity;
 
     /* local OpMode members. */
-    HardwareMap hwMap           =  null;
-    private ElapsedTime period  = new ElapsedTime();
+    HardwareMap hwMap = null;
+    private ElapsedTime period = new ElapsedTime();
 
     // Private Members
     private LinearOpMode myOpMode;
@@ -70,15 +70,15 @@ public class HardwareJoeBot2018
     private double globalAngle;
 
     // Declare Static members for calculations
-    static final double COUNTS_PER_MOTOR_REV    = 1120;
-    static final double DRIVE_GEAR_REDUCTION    = 1;
-    static final double WHEEL_DIAMETER_INCHES   = 4.0;
-    static final double COUNTS_PER_INCH         = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
+    static final double COUNTS_PER_MOTOR_REV = 1120;
+    static final double DRIVE_GEAR_REDUCTION = 1;
+    static final double WHEEL_DIAMETER_INCHES = 4.0;
+    static final double COUNTS_PER_INCH = (COUNTS_PER_MOTOR_REV * DRIVE_GEAR_REDUCTION) /
             (WHEEL_DIAMETER_INCHES * 3.14159);
     static final double INTAKE_MOTOR_POWER = 0.4;
 
     static final int LIFT_DOWN_POSITION = 0;
-    static final int LIFT_UP_POSITION = 2500;
+    static final int LIFT_UP_POSITION = 4200;
     static final double LIFT_POWER = 0.3;
 
 
@@ -99,11 +99,13 @@ public class HardwareJoeBot2018
     static final double MINERAL_OPEN_POS = 0.3;
     static final double MINERAL_CLOSE_POS = 0.8;
 
+    static final double MainBucketMotor_StartPos = 20;
+
     private boolean bMineralDoorOpen = false;
 
 
     /* Constructor */
-    public HardwareJoeBot2018(){
+    public HardwareJoeBot2018() {
 
     }
 
@@ -120,11 +122,11 @@ public class HardwareJoeBot2018
         motor2 = hwMap.dcMotor.get("motor2");
         motor3 = hwMap.dcMotor.get("motor3");
 
-        liftMotor       = hwMap.dcMotor.get("liftMotor");
-        shoulderMotor   = hwMap.dcMotor.get("shoulderMotor");
-        elbowMotor      = hwMap.dcMotor.get("elbowMotor");
-        intakeMotor     = hwMap.dcMotor.get("intakeMotor");
-
+        liftmotor = hwMap.dcMotor.get("liftmotor");
+        // shoulderMotor = hwMap.dcMotor.get("shoulderMotor");
+       /* elbowMotor = hwMap.dcMotor.get("elbowMotor");
+        intakeMotor = hwMap.dcMotor.get("intakeMotor");
+*/
         // Set Default Motor Directions for Drive Motors
         motor0.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
         motor1.setDirection(DcMotor.Direction.FORWARD); // Set to FORWARD if using AndyMark motors
@@ -133,22 +135,22 @@ public class HardwareJoeBot2018
 
         // Set Default Motor Direction for other Motors
         // For now, assume all directions run forward
-        liftMotor.setDirection(DcMotor.Direction.FORWARD);
-        shoulderMotor.setDirection(DcMotor.Direction.FORWARD);
-        elbowMotor.setDirection(DcMotor.Direction.FORWARD);
+        liftmotor.setDirection(DcMotor.Direction.FORWARD);
+        // shoulderMotor.setDirection(DcMotor.Direction.FORWARD);
+       /* elbowMotor.setDirection(DcMotor.Direction.FORWARD);
         intakeMotor.setDirection(DcMotor.Direction.FORWARD);
-
+*/
         // Set all motors to zero power
         motor0.setPower(0);
         motor1.setPower(0);
         motor2.setPower(0);
         motor3.setPower(0);
 
-        liftMotor.setPower(0);
-        shoulderMotor.setPower(0);
-        elbowMotor.setPower(0);
+        liftmotor.setPower(0);
+        //shoulderMotor.setPower(0);
+       /* elbowMotor.setPower(0);
         intakeMotor.setPower(0);
-
+*/
         // Map Servos
         mineralServo = hwMap.get(Servo.class, "mineralServo");
         markerServo = hwMap.get(Servo.class, "markerServo");
@@ -166,21 +168,21 @@ public class HardwareJoeBot2018
         motor2.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
         motor3.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
-        shoulderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        elbowMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        // shoulderMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        //elbowMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
 
-        shoulderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        elbowMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
+        // shoulderMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        // elbowMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        //intakeMotor.setMode(DcMotor.RunMode.RUN_WITHOUT_ENCODER);
 
 
         // TESTING
-        // Set liftMotor to RUN_TO_POSITION and tell it to run to zero
+        // Set liftmotor to RUN_TO_POSITION and tell it to run to zero
 
-        liftMotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
-        liftMotor.setTargetPosition(0);
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setPower(0.3);
+        liftmotor.setMode(DcMotor.RunMode.STOP_AND_RESET_ENCODER);
+        liftmotor.setTargetPosition(0);
+        liftmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftmotor.setPower(0.3);
 
         //
 
@@ -190,11 +192,11 @@ public class HardwareJoeBot2018
         // algorithm here just reports accelerations to the logcat log; it doesn't actually
         // provide positional information.
         BNO055IMU.Parameters parameters = new BNO055IMU.Parameters();
-        parameters.angleUnit           = BNO055IMU.AngleUnit.DEGREES;
-        parameters.accelUnit           = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
+        parameters.angleUnit = BNO055IMU.AngleUnit.DEGREES;
+        parameters.accelUnit = BNO055IMU.AccelUnit.METERS_PERSEC_PERSEC;
         parameters.calibrationDataFile = "BNO055IMUCalibration.json"; // see the calibration sample opmode
-        parameters.loggingEnabled      = true;
-        parameters.loggingTag          = "IMU";
+        parameters.loggingEnabled = true;
+        parameters.loggingTag = "IMU";
         parameters.accelerationIntegrationAlgorithm = new JustLoggingAccelerationIntegrator();
 
         // Retrieve and initialize the IMU. We expect the IMU to be attached to an I2C port
@@ -202,7 +204,6 @@ public class HardwareJoeBot2018
         // and named "imu".
         imu = hwMap.get(BNO055IMU.class, "imu");
         imu.initialize(parameters);
-
 
 
     }
@@ -218,7 +219,7 @@ public class HardwareJoeBot2018
      */
     public void waitForTick(long periodMs) throws InterruptedException {
 
-        long  remaining = periodMs - (long)period.milliseconds();
+        long remaining = periodMs - (long) period.milliseconds();
 
         // sleep for the remaining portion of the regular cycle period.
         if (remaining > 0)
@@ -233,7 +234,7 @@ public class HardwareJoeBot2018
      * void setMode(DcMotor.RunMode mode ) Set all drive motors to same mode.
      * @param mode    Desired Motor mode.
      */
-    public void setMode(DcMotor.RunMode mode ) {
+    public void setMode(DcMotor.RunMode mode) {
         motor0.setMode(mode);
         motor1.setMode(mode);
         motor2.setMode(mode);
@@ -241,15 +242,13 @@ public class HardwareJoeBot2018
     }
 
     /**
-     *
      * void moveRobot(double forward, double rigclockwise)
-     *ht, double
+     * ht, double
      * Calculates power settings for Mecanum drive for JoeBots
      *
      * @param forward
      * @param right
      * @param clockwise
-     *
      */
     public void moveRobot(double forward, double right, double clockwise) {
 
@@ -292,11 +291,9 @@ public class HardwareJoeBot2018
     }
 
     /**
-     *
      * stop()
-     *
+     * <p>
      * method to set all motor powers to zero
-     *
      */
 
     public void stop() {
@@ -309,15 +306,13 @@ public class HardwareJoeBot2018
     }
 
     /**
-     *
      * moveInches(double inches, double power)
-     *
+     * <p>
      * method to drive forward (only) for a set # of inches at a set power
      *
      * @param inches
      * @param power
      * @param timeoutSec
-     *
      */
 
     public void moveInches(double inches, double power, int timeoutSec) {
@@ -335,7 +330,7 @@ public class HardwareJoeBot2018
         int newMotor3Target;
 
         // Check to make sure the OpMode is still active; If it isn't don't run the method
-        if(myOpMode.opModeIsActive()) {
+        if (myOpMode.opModeIsActive()) {
 
             // Determine new target positions for each wheel
             newMotor0Target = motor0.getCurrentPosition() + (int) (inches * COUNTS_PER_INCH);
@@ -356,7 +351,7 @@ public class HardwareJoeBot2018
             runtime.reset();
 
             // Start moving the robot
-            moveRobot(power,0,0);
+            moveRobot(power, 0, 0);
 
             // Keep looping (wait) until the motors are finished or timeout is reached.
             while (myOpMode.opModeIsActive() && (runtime.seconds() < timeoutSec) &&
@@ -366,15 +361,15 @@ public class HardwareJoeBot2018
                 //Compose Telemetry message
                 myOpMode.telemetry.addLine("> Waiting for robot to reach target");
                 myOpMode.telemetry.addLine("Curr. Pos. |")
-                        .addData("1:",motor0.getCurrentPosition())
-                        .addData("2:",motor1.getCurrentPosition())
-                        .addData("3:",motor2.getCurrentPosition())
-                        .addData("4:",motor3.getCurrentPosition());
+                        .addData("1:", motor0.getCurrentPosition())
+                        .addData("2:", motor1.getCurrentPosition())
+                        .addData("3:", motor2.getCurrentPosition())
+                        .addData("4:", motor3.getCurrentPosition());
                 myOpMode.telemetry.addLine("Target | ")
-                        .addData("1:",newMotor0Target)
-                        .addData("2:",newMotor1Target)
-                        .addData("3:",newMotor2Target)
-                        .addData("4:",newMotor3Target);
+                        .addData("1:", newMotor0Target)
+                        .addData("2:", newMotor1Target)
+                        .addData("3:", newMotor2Target)
+                        .addData("4:", newMotor3Target);
                 myOpMode.telemetry.addData("Power: ", power);
                 myOpMode.telemetry.update();
 
@@ -395,15 +390,13 @@ public class HardwareJoeBot2018
     }
 
     /**
-     *
      * resetImuAngle()
-     *
+     * <p>
      * Method to grab the current reading from the IMU and set the cumulative angle tracking
      * to 0
-     *
      */
 
-    private void resetAngle(){
+    private void resetAngle() {
 
         // Grab reading from IMU and store it in lastImuAngles
         lastImuAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
@@ -414,19 +407,17 @@ public class HardwareJoeBot2018
     }
 
     /**
-     *
      * getAngle()
-     *
+     * <p>
      * Gets the current cumulative angle rotation from last reset.
      *
      * @return Angle in degrees (+ left, - right)
-     *
      */
 
-    private double getAngle(){
+    private double getAngle() {
 
         // Grab the current IMU Angle reading
-        Orientation currAngles = imu.getAngularOrientation(AxesReference.INTRINSIC,AxesOrder.ZYX,AngleUnit.DEGREES);
+        Orientation currAngles = imu.getAngularOrientation(AxesReference.INTRINSIC, AxesOrder.ZYX, AngleUnit.DEGREES);
 
         // Determine the difference between the current Angle reading and the last reset
         double deltaAngle = currAngles.firstAngle - lastImuAngles.firstAngle;
@@ -444,18 +435,15 @@ public class HardwareJoeBot2018
     }
 
     /**
-     *
      * rotate(int degrees, double power)
-     *
+     * <p>
      * Does not support turning more than 180 degrees.
      *
      * @param degrees
      * @param power
-     *
-     *
      */
 
-    public void rotate(int degrees, double power){
+    public void rotate(int degrees, double power) {
 
         myOpMode.telemetry.log().add("Starting rotate method");
 
@@ -464,10 +452,10 @@ public class HardwareJoeBot2018
 
         // getAngle returns + when rotating clockwise and - when rotating counter clockwise
         // set power (speed) negative when turning left
-        if (degrees < 0 ) power = -power;
+        if (degrees < 0) power = -power;
 
         // start robot turning
-        moveRobot(0,0,power);
+        moveRobot(0, 0, power);
 
         // stop turning when getAngle() returns a value greater or less than intended degrees
         if (degrees > 0) {
@@ -510,18 +498,17 @@ public class HardwareJoeBot2018
         resetAngle();
 
 
-
     }
 
-    public void toggleIntake(String strIntakeDirection) {
+    //public void toggleIntake(String strIntakeDirection) {
 
-        //This method should determine the current status of the intake motor. If the motor is
-        // stopped, it should be started in the appropriate direction at the appropriate power.
-        // if the motor is currently running in the same direction as supplied to the method,
-        // then the motor should stop. Otherwise, we should switch the motor to the direction
-        // supplied.
+    //This method should determine the current status of the intake motor. If the motor is
+    // stopped, it should be started in the appropriate direction at the appropriate power.
+    // if the motor is currently running in the same direction as supplied to the method,
+    // then the motor should stop. Otherwise, we should switch the motor to the direction
+    // supplied.
 
-        if (intakeMotor.getPower() != 0) {
+       /* if (intakeMotor.getPower() != 0) {
             // Motor must be running... Is it running in the correct direction?
             if (intakeMotor.getPower() < 0) {
                 // Motor is running in reverse
@@ -552,99 +539,100 @@ public class HardwareJoeBot2018
 
         }
 
-    }
+    }*/
 
-    public void lowerLift() {
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setTargetPosition(LIFT_DOWN_POSITION);
-        liftMotor.setPower(LIFT_POWER);
-        while (myOpMode.opModeIsActive() && liftMotor.isBusy()){
+    public void lowerLift () {
+        liftmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftmotor.setTargetPosition(LIFT_DOWN_POSITION);
+        liftmotor.setPower(LIFT_POWER);
+        while (myOpMode.opModeIsActive() && liftmotor.isBusy()) {
             myOpMode.telemetry.addLine("Lowering Lift");
             myOpMode.telemetry.addData("Target Position: ", LIFT_DOWN_POSITION);
-            myOpMode.telemetry.addData("Current Position: ", liftMotor.getCurrentPosition());
+            myOpMode.telemetry.addData("Current Position: ", liftmotor.getCurrentPosition());
             myOpMode.telemetry.update();
             myOpMode.idle();
         }
     }
 
-    public void raiseLift(){
-        liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        liftMotor.setTargetPosition(LIFT_UP_POSITION);
-        liftMotor.setPower(LIFT_POWER);
-        while (myOpMode.opModeIsActive() && liftMotor.isBusy()){
+    public void raiseLift () {
+        liftmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        liftmotor.setTargetPosition(LIFT_UP_POSITION);
+        liftmotor.setPower(LIFT_POWER);
+        while (myOpMode.opModeIsActive() && liftmotor.isBusy()) {
             myOpMode.telemetry.addLine("Raising Lift");
             myOpMode.telemetry.addData("Target Position: ", LIFT_UP_POSITION);
-            myOpMode.telemetry.addData("Current Position: ", liftMotor.getCurrentPosition());
+            myOpMode.telemetry.addData("Current Position: ", liftmotor.getCurrentPosition());
             myOpMode.telemetry.update();
             myOpMode.idle();
         }
     }
 
-    public void stowArm() {
-        // Move the arm to stowing position. In initial testing we determined that we should begin
-        // to fold the elbow before we move the shoulder. This will (hopefully) prevent the shoulder
-        // from throwing the elbow out of position.
 
-        // Move the elbow first
-        elbowMotor.setTargetPosition(ELBOW_STOW_POS);
-        elbowMotor.setPower(ELBOW_STD_POWER);
+    //     public void stowArm () {
+    // Move the arm to stowing position. In initial testing we determined that we should begin
+    // to fold the elbow before we move the shoulder. This will (hopefully) prevent the shoulder
+    // from throwing the elbow out of position.
 
-        // sleep for 1/4 second to let the elbow get started.
-        myOpMode.sleep(250);
+    // Move the elbow first
+    //elbowMotor.setTargetPosition(ELBOW_STOW_POS);
+    //elbowMotor.setPower(ELBOW_STD_POWER);
 
-        // now nove the shoulder
-        shoulderMotor.setTargetPosition(SHOULDER_STOW_POS);
-        shoulderMotor.setPower(SHOULDER_STD_POWER);
+    // sleep for 1/4 second to let the elbow get started.
+    //myOpMode.sleep(250);
 
-        // In "stow" position, we don't need to hold the arm in place, so set motor power to zero
-        // after the shoulder is in place.
-        while (myOpMode.opModeIsActive() && shoulderMotor.isBusy()) {
+    // now nove the shoulder
+    //shoulderMotor.setTargetPosition(SHOULDER_STOW_POS);
+    //shoulderMotor.setPower(SHOULDER_STD_POWER);
+
+    // In "stow" position, we don't need to hold the arm in place, so set motor power to zero
+    // after the shoulder is in place.
+       /* while (myOpMode.opModeIsActive() && shoulderMotor.isBusy()) {
             myOpMode.idle();
-        }
-        shoulderMotor.setPower(0);
+        */
 
-    }
+    //shoulderMotor.setPower(0);
 
-    public void scoreArm() {
-        // Move the arm to Scoring position. Initial testing has shown that the arm carries too
-        // much momentum when moving to scoring position, and can thow it too far back. To control
-        // this, we're going to try to fold a the elbow first, reducing the force at the end of the
-        // arm.
 
-        // fold the elbow in
-        elbowMotor.setTargetPosition(ELBOW_STOW_POS);
-        elbowMotor.setPower(ELBOW_STD_POWER);
 
-        // Move the shoulder to scoring position
-        shoulderMotor.setTargetPosition(SHOULDER_SCORE_POS);
-        shoulderMotor.setPower(SHOULDER_STD_POWER);
+    // Move the arm to Scoring position. Initial testing has shown that the arm carries too
+    // much momentum when moving to scoring position, and can thow it too far back. To control
+    // this, we're going to try to fold a the elbow first, reducing the force at the end of the
+    // arm.
 
-        // Wait for the shoulder motor move to complete
-        while (myOpMode.opModeIsActive() && shoulderMotor.isBusy()) {
+    // fold the elbow in
+    // elbowMotor.setTargetPosition(ELBOW_STOW_POS);
+    //elbowMotor.setPower(ELBOW_STD_POWER);
+
+    // Move the shoulder to scoring position
+    // shoulderMotor.setTargetPosition(SHOULDER_SCORE_POS);
+    //shoulderMotor.setPower(SHOULDER_STD_POWER);
+
+    // Wait for the shoulder motor move to complete
+      /*  while (myOpMode.opModeIsActive() && shoulderMotor.isBusy()) {
             myOpMode.idle();
-        }
+        }*/
 
-        // move the elbow to scoring position
-        elbowMotor.setTargetPosition(ELBOW_SCORE_POS);
-        elbowMotor.setPower(ELBOW_STD_POWER);
+    // move the elbow to scoring position
+    //elbowMotor.setTargetPosition(ELBOW_SCORE_POS);
+    //elbowMotor.setPower(ELBOW_STD_POWER);
 
-    }
+    //}
 
-    public void searchArm() {
+    public void searchArm () {
         // Move the arm to Searching position.
 
         // Start the elbow moving forward
-        elbowMotor.setTargetPosition(ELBOW_SEARCH_POS);
-        elbowMotor.setPower(ELBOW_STD_POWER);
+        //elbowMotor.setTargetPosition(ELBOW_SEARCH_POS);
+        //elbowMotor.setPower(ELBOW_STD_POWER);
 
         // Start the shoulder moving forward
-        shoulderMotor.setTargetPosition(SHOULDER_SEARCH_POS);
-        shoulderMotor.setPower(SHOULDER_STD_POWER);
+        // shoulderMotor.setTargetPosition(SHOULDER_SEARCH_POS);
+        //shoulderMotor.setPower(SHOULDER_STD_POWER);
     }
 
-    public void toggleMineralDoor() {
+    public void toggleMineralDoor () {
 
-        if(bMineralDoorOpen) {
+        if (bMineralDoorOpen) {
             //Mineral door is open; close it.
             mineralServo.setPosition(MINERAL_CLOSE_POS);
             bMineralDoorOpen = false;
@@ -656,7 +644,7 @@ public class HardwareJoeBot2018
 
     }
 
-    public void dropMarker() {
+    public void dropMarker () {
         // Open and Close Servo
         markerServo.setPosition(MARKER_OPEN_POS);
         myOpMode.sleep(1000);
@@ -664,5 +652,38 @@ public class HardwareJoeBot2018
 
     }
 
+    public void startPosMainBucketMotor () {
+        if (MainBucketMotor.getCurrentPosition() <= 0) {
+            MainBucketMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            MainBucketMotor.setTargetPosition(0);
+        }
+        if (MainBucketMotor.getCurrentPosition() >= 0) {
+            MainBucketMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            MainBucketMotor.setTargetPosition(0);
+        }
+    }
 
+
+    public void hangLanderPos () {
+        if (liftmotor.getCurrentPosition() <= 1429) {
+            liftmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftmotor.setTargetPosition(1429);
+        }
+        if (liftmotor.getCurrentPosition() >= 1429) {
+            liftmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftmotor.setTargetPosition(1429);
+        }
+    }
+
+
+    public void defaultPosMainBucketMotor () {
+        if (MainBucketMotor.getCurrentPosition() <= 0) {
+            MainBucketMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            MainBucketMotor.setTargetPosition(0);
+        }
+        if (MainBucketMotor.getCurrentPosition() >= 0) {
+            MainBucketMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            MainBucketMotor.setTargetPosition(0);
+        }
+    }
 }
