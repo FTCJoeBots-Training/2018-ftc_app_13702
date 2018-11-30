@@ -131,7 +131,7 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
 
         robot.moveRobot(0,0.3,0);
         runtime.reset();
-        while(opModeIsActive() && runtime.seconds() < 0.3) {
+        while(opModeIsActive() && runtime.seconds() < 0.6) {
             idle();
         }
         robot.stop();
@@ -140,7 +140,7 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
         robot.minLanderPos();
         robot.moveRobot(0,-0.3,0);
         runtime.reset();
-        while(opModeIsActive() && runtime.seconds() < 0.3) {
+        while(opModeIsActive() && runtime.seconds() < 0.6) {
             idle();
         }
         robot.stop();
@@ -155,11 +155,13 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
 
             // center driving paths
         } else if (mineralPath == 1) {
+            robot.rotate(-10,.5);
+
             robot.moveInches(45,1,15);
 
             robot.forwardToggle();
 
-            sleep(2000);
+            sleep(1000);
 
             robot.mainBucketMotor.setPower(-0.50);
 
@@ -167,9 +169,9 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
 
             robot.moveRobot(0,0.25,0);
 
-            sleep(2000);
+            sleep(1000);
 
-            robot.moveInches(55,1,15);
+            robot.moveInches(60,1,15);
 
             robot.mainBucketMotor.setPower(0.50);
 

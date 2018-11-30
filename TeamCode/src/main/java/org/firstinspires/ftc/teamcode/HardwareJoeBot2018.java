@@ -115,7 +115,7 @@ public class HardwareJoeBot2018
     static final int BUCKET_IN_POS = 0;
     static final int BUCKET_OUT_POS = 440;
     static  final double BUCKET_POWER = 0.15;
-    static  final double LIFT_POWER = 0.5;
+    static  final double LIFT_POWER = 1;
     static  final int LIFT_UP_POS = 10150;
     static  final int LIFT_DOWN_POS = 0;
     static  final int LIFT_SCORE_POS = 14000;
