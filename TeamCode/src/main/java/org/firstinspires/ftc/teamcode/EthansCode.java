@@ -103,6 +103,10 @@ public class EthansCode extends LinearOpMode {
 
         // Connect to motor (Assume standard left wheel)
         // Change the text in quotes to match any motor name on your robot.
+        robot.liftMotor = hardwareMap.get(DcMotor.class, "liftmotor");
+        robot.mainbucketmotor = hardwareMap.get(DcMotor.class, "mainbucketmotor");
+        robot.intakeMotor = hardwareMap.get(DcMotor.class, "intakemotor");
+        liftbucket = hardwareMap.get(Servo.class, "liftbucket");
         rightpos = hardwareMap.get(Servo.class, "rightpos");
         leftpos = hardwareMap.get(Servo.class, "leftpos");
 
@@ -190,9 +194,9 @@ public class EthansCode extends LinearOpMode {
 
             // Map "power" variable to gamepad input
             mainbucketpower = gamepad2.left_stick_y * 0.75;
-            robot.mainBucketMotor.setPower(mainbucketpower);
+            robot.mainbucketmotor.setPower(mainbucketpower);
 
-            liftpower = gamepad2.right_stick_y * 0.75;
+            liftpower = gamepad2.right_stick_y * 0.25;
             robot.liftMotor.setPower(liftpower);
 
             telemetry.addLine("operator i suppose");
@@ -288,6 +292,8 @@ public class EthansCode extends LinearOpMode {
             telemetry.addData("position", "%5.2f", robot.liftbucketservo.getPosition());
             telemetry.addData("right_position", "%5.2f", rightpos.getPosition());
             telemetry.addData("left_position", "%5.2f", leftpos.getPosition());
+
+            // telemetry.addData("Lift Bucket Servo", "%5.2f", liftbucketpos);
 
 
             telemetry.addData(">", "Press Stop to end test." );
