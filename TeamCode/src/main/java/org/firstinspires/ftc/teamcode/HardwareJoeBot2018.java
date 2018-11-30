@@ -517,13 +517,13 @@ public class HardwareJoeBot2018
 
     public void deployBucket() {
         // code to move bucket to search position
-        mainbucketmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        mainbucketmotor.setTargetPosition(BUCKET_OUT_POS);
-        mainbucketmotor.setPower(BUCKET_POWER);
+        mainBucketMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mainBucketMotor.setTargetPosition(BUCKET_OUT_POS);
+        mainBucketMotor.setPower(BUCKET_POWER);
 
         // WAIT FOR BUCKET TO FINISH
 
-        while(myOpMode.opModeIsActive() && mainbucketmotor.isBusy()) {
+        while(myOpMode.opModeIsActive() && mainBucketMotor.isBusy()) {
             myOpMode.idle();
         }
         // bucket is finished moving. Tell robot.
@@ -531,13 +531,13 @@ public class HardwareJoeBot2018
     }
 
     public void stowBucket() {// code to move bucket to search position
-        mainbucketmotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-        mainbucketmotor.setTargetPosition(BUCKET_IN_POS);
-        mainbucketmotor.setPower(BUCKET_POWER);
+        mainBucketMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+        mainBucketMotor.setTargetPosition(BUCKET_IN_POS);
+        mainBucketMotor.setPower(BUCKET_POWER);
 
         // WAIT FOR BUCKET TO FINISH
 
-        while(myOpMode.opModeIsActive() && mainbucketmotor.isBusy()) {
+        while(myOpMode.opModeIsActive() && mainBucketMotor.isBusy()) {
             myOpMode.idle();
         }
         // bucket is finished moving. Tell robot.

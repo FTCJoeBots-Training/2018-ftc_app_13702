@@ -104,9 +104,9 @@ public class EthansCode extends LinearOpMode {
         // Connect to motor (Assume standard left wheel)
         // Change the text in quotes to match any motor name on your robot.
         robot.liftMotor = hardwareMap.get(DcMotor.class, "liftmotor");
-        robot.mainbucketmotor = hardwareMap.get(DcMotor.class, "mainbucketmotor");
+        robot.mainBucketMotor = hardwareMap.get(DcMotor.class, "mainbucketmotor");
         robot.intakeMotor = hardwareMap.get(DcMotor.class, "intakemotor");
-        liftbucket = hardwareMap.get(Servo.class, "liftbucket");
+        robot.liftbucketservo = hardwareMap.get(Servo.class, "liftbucket");
         rightpos = hardwareMap.get(Servo.class, "rightpos");
         leftpos = hardwareMap.get(Servo.class, "leftpos");
 
@@ -194,7 +194,7 @@ public class EthansCode extends LinearOpMode {
 
             // Map "power" variable to gamepad input
             mainbucketpower = gamepad2.left_stick_y * 0.75;
-            robot.mainbucketmotor.setPower(mainbucketpower);
+            robot.mainBucketMotor.setPower(mainbucketpower);
 
             liftpower = gamepad2.right_stick_y * 0.25;
             robot.liftMotor.setPower(liftpower);

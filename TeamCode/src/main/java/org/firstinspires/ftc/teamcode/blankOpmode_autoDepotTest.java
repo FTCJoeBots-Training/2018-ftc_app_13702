@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  *
@@ -57,6 +58,7 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
          * The init() method of the hardware class does all the work here
          */
         robot.init(hardwareMap, this);
+        ElapsedTime runtime = new ElapsedTime();
 
         // Send telemetry message to signify robot waiting;
         telemetry.addData("Status", "Resetting Encoders");    //
@@ -68,9 +70,7 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
 
-        robot.minLanderPos();
 
-        robot.minLanderPos();
 
         /*
         for(x=0; x<100; x++) {
@@ -115,7 +115,6 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
         }
 
 
-
         waitForStart();
 
         //lower the robot (raise the lift)
@@ -128,6 +127,23 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
 
         // Sample Minerals... Do we see gold?
         // 0 = left; 1 = center; 2=right
+        robot.hangLanderPos();
+
+        robot.moveRobot(0,0.3,0);
+        runtime.reset();
+        while(opModeIsActive() && runtime.seconds() < 0.3) {
+            idle();
+        }
+        robot.stop();
+
+
+        robot.minLanderPos();
+        robot.moveRobot(0,-0.3,0);
+        runtime.reset();
+        while(opModeIsActive() && runtime.seconds() < 0.3) {
+            idle();
+        }
+        robot.stop();
 
 
 

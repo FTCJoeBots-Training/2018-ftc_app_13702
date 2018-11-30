@@ -75,18 +75,18 @@ public class Deploy_13702 extends LinearOpMode {
 
         robot.hangLanderPos();
 
-        robot.moveRobot(0,0.5,0);
+        robot.moveRobot(0,0.3,0);
         runtime.reset();
-        while(opModeIsActive() && runtime.seconds() < 0.5) {
+        while(opModeIsActive() && runtime.seconds() < 0.3) {
             idle();
         }
         robot.stop();
 
 
         robot.minLanderPos();
-        robot.moveRobot(0,-0.5,0);
+        robot.moveRobot(0,-0.3,0);
         runtime.reset();
-        while(opModeIsActive() && runtime.seconds() < 0.5) {
+        while(opModeIsActive() && runtime.seconds() < 0.3) {
             idle();
         }
         robot.stop();
