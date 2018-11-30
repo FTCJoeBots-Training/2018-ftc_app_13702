@@ -72,7 +72,7 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
 
         robot.minLanderPos();
 
-
+        /*
         for(x=0; x<100; x++) {
 
             // set mineralpath = tensorflow data
@@ -84,6 +84,9 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
             }
             sleep(50);
         }
+        */
+
+        mineralPath = 1;
 
         switch(mineralPath) {
             case 0:
@@ -133,10 +136,30 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
         if (mineralPath == 0) {
             // left driving paths
         } else if (mineralPath == -1) {
+
             // center driving paths
         } else if (mineralPath == 1) {
+            robot.moveInches(45,1,15);
+
+            robot.forwardToggle();
+
+            sleep(2000);
+
+            robot.mainBucketMotor.setPower(-0.50);
+
+            robot.rotate(-135,.5);
+
+            robot.moveRobot(0,0.25,0);
+
+            sleep(2000);
+
+            robot.moveInches(55,1,15);
+
+            robot.mainBucketMotor.setPower(0.50);
+
             // center driving paths
         } else if (mineralPath == 2) {
+
             // right driving paths
         }
 
@@ -144,7 +167,8 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
         // Head to Crater for parking
 
         //robot.rotate(45,.25);
-        /*
+
+       /*
         robot.moveInches(43,1,15);
 
         robot.forwardToggle();
@@ -152,7 +176,7 @@ public class blankOpmode_autoDepotTest extends LinearOpMode {
         robot.mainBucketMotor.setPower(-0.75);
         robot.rotate(-135,.5);
         robot.moveRobot(0,2,0);
-        sleep(1000);
+        sleep(2000);
         robot.moveInches(75,1,15);
         */
 

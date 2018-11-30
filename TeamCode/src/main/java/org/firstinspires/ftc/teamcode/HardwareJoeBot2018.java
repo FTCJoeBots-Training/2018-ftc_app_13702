@@ -624,11 +624,11 @@ public class HardwareJoeBot2018
                     int silverMineral2X = -1;
                     for (Recognition recognition : updatedRecognitions) {
                         if (recognition.getLabel().equals(LABEL_GOLD_MINERAL)) {
-                            goldMineralX = (int) recognition.getTop();
+                            goldMineralX = (int) recognition.getLeft();
                             myOpMode.telemetry.addData("Left Edge:",recognition.getTop());
                         }
                         if (recognition.getLabel().equals(LABEL_SILVER_MINERAL)) {
-                            silverMineral1X = (int) recognition.getTop();
+                            silverMineral1X = (int) recognition.getLeft();
                             myOpMode.telemetry.addData("Left Edge:",recognition.getTop());
                         }
 
@@ -644,18 +644,18 @@ public class HardwareJoeBot2018
                     }
                     else if (goldMineralX > silverMineral1X)
                     {
-                        myOpMode.telemetry.addLine("Center");
-                        myOpMode.telemetry.addData("gold mineral X", goldMineralX);
-                        myOpMode.telemetry.addData("silver mineral x", silverMineral1X);
-                        return 1;
-                    }
-
-                    else if (goldMineralX < silverMineral1X)
-                    {
                         myOpMode.telemetry.addLine("Left");
                         myOpMode.telemetry.addData("gold mineral X", goldMineralX);
                         myOpMode.telemetry.addData("silver mineral x", silverMineral1X);
                         return 0;
+                    }
+
+                    else if (goldMineralX < silverMineral1X)
+                    {
+                        myOpMode.telemetry.addLine("Center");
+                        myOpMode.telemetry.addData("gold mineral X", goldMineralX);
+                        myOpMode.telemetry.addData("silver mineral x", silverMineral1X);
+                        return 1;
                     }
 
                     else
