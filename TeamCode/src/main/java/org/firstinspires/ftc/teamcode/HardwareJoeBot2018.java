@@ -254,7 +254,6 @@ public class HardwareJoeBot2018
         double power1;
         double power2;
         double power3;
-        double liftPower;
         double mainPower;
 
         double max;
@@ -429,24 +428,31 @@ public class HardwareJoeBot2018
 
 
     public void minLanderPos () {
-        if (liftMotor.getCurrentPosition() <= 52) {
+        if (liftMotor.getCurrentPosition() <= 0) {
             liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(52);
+            liftMotor.setTargetPosition(0);
+            liftMotor.setPower(0.75);
+
         }
-        if (liftMotor.getCurrentPosition() >= 52) {
+        if (liftMotor.getCurrentPosition() >= 0) {
             liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(52);
-            }
+            liftMotor.setTargetPosition(0);
+            liftMotor.setPower(0.75);
+
+        }
     }
 
     public void hangLanderPos () {
-        if (liftMotor.getCurrentPosition() <= 1429) {
+        if (liftMotor.getCurrentPosition() <= -280) {
             liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(1429);
+            liftMotor.setTargetPosition(-280);
+            liftMotor.setPower(0.75);
         }
-        if (liftMotor.getCurrentPosition() >= 1429) {
+        if (liftMotor.getCurrentPosition() >= -280) {
             liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(1429);
+            liftMotor.setTargetPosition(-280);
+            liftMotor.setPower(0.75);
+
         }
     }
 

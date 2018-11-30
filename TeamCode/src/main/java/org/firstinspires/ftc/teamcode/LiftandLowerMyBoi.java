@@ -102,7 +102,7 @@ public class LiftandLowerMyBoi extends LinearOpMode {
 
         robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
         robot.liftMotor.setTargetPosition(-459);
-        robot.liftMotor.setPower(0.7);
+        robot.liftMotor.setPower(0.75);
 
         // Red Crater Code
 

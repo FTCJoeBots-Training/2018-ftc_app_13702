@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  */
 
-@Autonomous(name="13702 depot", group="Testing")
+@Autonomous(name="13702 Crater", group="Testing")
 
 public class blankOpmode_autodepo extends LinearOpMode {
 
@@ -116,7 +116,7 @@ public class blankOpmode_autodepo extends LinearOpMode {
 
         robot.moveInches(50,1,15);
 
-        robot.mainbucketmotor.setPower(-0.75);
+        robot.mainBucketMotor.setPower(-0.75);
 
         robot.forwardToggle();
 

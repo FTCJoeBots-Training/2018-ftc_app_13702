@@ -74,6 +74,12 @@ public class Deploy_13702 extends LinearOpMode {
         robot.hangLanderPos();
 
 
+        /*
+            robot.liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+             robot.liftMotor.setTargetPosition(-459);
+             robot.liftMotor.setPower(0.75);
+         */
+
         //robot.moveInches(70,1,15);
 
 

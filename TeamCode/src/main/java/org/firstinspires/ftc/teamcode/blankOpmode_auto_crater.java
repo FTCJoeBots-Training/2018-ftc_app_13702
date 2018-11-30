@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  */
 
-@Autonomous(name="13702 crater", group="Testing")
+@Autonomous(name="13702 craterr", group="Testing")
 
 public class blankOpmode_auto_crater extends LinearOpMode {
 
