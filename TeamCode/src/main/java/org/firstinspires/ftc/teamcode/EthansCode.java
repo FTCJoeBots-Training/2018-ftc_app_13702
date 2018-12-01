@@ -192,8 +192,8 @@ public class EthansCode extends LinearOpMode {
             mainbucketpower = gamepad2.left_stick_y * 0.75;
             robot.mainBucketMotor.setPower(mainbucketpower);
 
-            liftpower = gamepad2.right_stick_y * 0.75;
-            robot.liftMotor.setPower(liftpower);
+            liftpower = gamepad2.right_stick_y;
+            robot.liftMotor.setPower(-liftpower);
 
             telemetry.addLine("operator i suppose");
             telemetry.update();
@@ -270,8 +270,8 @@ public class EthansCode extends LinearOpMode {
             bPrevStateC = bCurrStateC;
 
             if (CIntakeOn == true) {
-                rightpos.setPosition(0.7);
-                leftpos.setPosition(0.2);
+                rightpos.setPosition(0.6);
+                leftpos.setPosition(0.5);
             } else {
                 rightpos.setPosition(1);
                 leftpos.setPosition(0);
