@@ -40,7 +40,7 @@ import com.qualcomm.robotcore.hardware.DcMotor;
  *
  */
 
-@Autonomous(name="13702 Depot Middle Mineral IMPORTANT", group="Testing")
+@Autonomous(name="13702 Crater Middle Mineral IMPORTANT", group="Testing")
 
 public class AutoCraterWithSampling extends LinearOpMode {
 

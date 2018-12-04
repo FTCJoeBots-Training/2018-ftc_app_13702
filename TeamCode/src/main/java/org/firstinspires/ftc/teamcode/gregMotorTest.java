@@ -39,7 +39,7 @@ import com.qualcomm.robotcore.hardware.Servo;
 /**
  * Sample code to test mapping of one motor to the gamepad.
  */
-@Autonomous(name = "READ Encoder Values", group = "Testing")
+@Autonomous(name = "READ Encoder Values Plz ", group = "Testing")
 //@Disabled
 public class gregMotorTest extends LinearOpMode {
 
@@ -48,6 +48,10 @@ public class gregMotorTest extends LinearOpMode {
     DcMotor  liftMotor = null; // Lander Lift Motor
     DcMotor  mainbucketmotor = null;
     double liftpower = 0;
+
+    Servo rightpos;
+    Servo leftpos;
+
    // DcMotor  elbowMotor =  null;
     //DcMotor  intakeMotor = null;
 
@@ -60,6 +64,8 @@ public class gregMotorTest extends LinearOpMode {
 
         liftMotor       = hardwareMap.dcMotor.get("liftmotor");
         mainbucketmotor   = hardwareMap.dcMotor.get("mainbucketmotor");
+        rightpos    = hardwareMap.servo.get("rightpos");
+        leftpos     = hardwareMap.servo.get("leftpos");
       //  elbowMotor      = hardwareMap.dcMotor.get("elbowMotor");
        // intakeMotor     = hardwareMap.dcMotor.get("intakeMotor");
 
@@ -73,6 +79,7 @@ public class gregMotorTest extends LinearOpMode {
 
         liftMotor.setPower(0);
         mainbucketmotor.setPower(0);
+
        // elbowMotor.setPower(0);
        // intakeMotor.setPower(0);
 
@@ -94,7 +101,11 @@ public class gregMotorTest extends LinearOpMode {
           //  telemetry.addData("elbowMotor Pos: ", elbowMotor.getCurrentPosition());
             telemetry.addData("mainbucketmotor ", mainbucketmotor.getCurrentPosition());
             telemetry.addData("liftMotor ", liftMotor.getCurrentPosition());
-           // telemetry.addData("Mineral Servo: ", mineralServo.getPosition());
+            telemetry.addData("rightpos ", rightpos.getPosition());
+            telemetry.addData("leftpos ", leftpos.getPosition());
+
+
+            // telemetry.addData("Mineral Servo: ", mineralServo.getPosition());
             telemetry.addData(">", "Press Stop to end test." );
             telemetry.update();
 

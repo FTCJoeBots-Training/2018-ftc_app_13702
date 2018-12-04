@@ -52,7 +52,6 @@ public class HardwareJoeBot2018
     public DcMotor  intakeMotor;
     public DcMotor  mainBucketMotor;
     public Servo    liftbucketservo;
-    public DcMotor  liftBucketMotor;
    // public DcMotor  rotateMotor
     public DcMotor  liftMotor;
    // public Servo    scoringServo
@@ -128,9 +127,7 @@ public class HardwareJoeBot2018
         liftMotor = hwMap.dcMotor.get("liftmotor");
         liftbucketservo = hwMap.servo.get("liftbucketservo");
 
-        //liftBucketMotor = hwMap.dcMotor.get("liftBucketMotor");
-        //mainBucketMotor = hwMap.dcMotor.get("mainBucketMotor");
-        //intakeMotor = hwMap.dcMotor.get("intakeMotor");
+
 
         // Set Default Motor Directions
         motor0.setDirection(DcMotor.Direction.REVERSE); // Set to REVERSE if using AndyMark motors
@@ -443,14 +440,30 @@ public class HardwareJoeBot2018
     }
 
     public void hangLanderPos () {
-        if (liftMotor.getCurrentPosition() <= -280) {
+        if (liftMotor.getCurrentPosition() <= -20264) {
+            mainBucketMotor.setPower(-0.70);
             liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(-280);
+            liftMotor.setTargetPosition(-20264);
             liftMotor.setPower(0.75);
         }
-        if (liftMotor.getCurrentPosition() >= -280) {
+        if (liftMotor.getCurrentPosition() >= -20264) {
+            mainBucketMotor.setPower(-0.75);
             liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
-            liftMotor.setTargetPosition(-280);
+            liftMotor.setTargetPosition(-20264);
+            liftMotor.setPower(0.75);
+
+        }
+    }
+
+    public void scoreLanderPos () {
+        if (liftMotor.getCurrentPosition() <= -30519) {
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setTargetPosition(-30519);
+            liftMotor.setPower(0.75);
+        }
+        if (liftMotor.getCurrentPosition() >= -30519) {
+            liftMotor.setMode(DcMotor.RunMode.RUN_TO_POSITION);
+            liftMotor.setTargetPosition(-30519);
             liftMotor.setPower(0.75);
 
         }

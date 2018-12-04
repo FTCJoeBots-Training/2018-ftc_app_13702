@@ -32,6 +32,7 @@ package org.firstinspires.ftc.teamcode;
 import com.qualcomm.robotcore.eventloop.opmode.Autonomous;
 import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.hardware.DcMotor;
+import com.qualcomm.robotcore.util.ElapsedTime;
 
 /**
  *
@@ -50,6 +51,8 @@ public class blankOpmode_autoCraterSmash extends LinearOpMode {
     // @Override
     public void runOpMode() {
 
+       ElapsedTime runtime = new ElapsedTime();
+
         /*
          * Initialize the drive system variables.
          * The init() method of the hardware class does all the work here
@@ -66,12 +69,19 @@ public class blankOpmode_autoCraterSmash extends LinearOpMode {
 
         // Wait for the game to start (driver presses PLAY)
 
-        robot.minLanderPos();
-
-        robot.minLanderPos();
-
         waitForStart();
 
+        robot.hangLanderPos();
+
+        robot.moveRobot(0,0.5,0);
+        runtime.reset();
+        while(opModeIsActive() && runtime.seconds() < 0.6) {
+            idle();
+        }
+        robot.stop();
+
+
+        robot.moveInches(50,.75,0);
 
 
 
